@@ -8,17 +8,20 @@
 
 # COMMAND ----------
 
-# chatBotModel = "databricks-dbrx-instruct"
-chatBotModel = "databricks-meta-llama-3-70b-instruct"
-max_tokens = 2000
-VECTOR_SEARCH_ENDPOINT_NAME = "one-env-shared-endpoint-8"
-vectorSearchIndexName = "pdf_content_embeddings_index"
-embeddings_endpoint = "databricks-bge-large-en"
-catalog = "hz_rag_poc_test_catalog"
-dbName = "hz_rag_poc_test_db"
+# chatBotModel = "databricks-meta-llama-3-70b-instruct"
+# max_tokens = 2000
+# VECTOR_SEARCH_ENDPOINT_NAME = "one-env-shared-endpoint-8"
+# vectorSearchIndexName = "pdf_content_embeddings_index"
+# embeddings_endpoint = "databricks-gte-large-en"
+# catalog = "ttan_demo_catalog"
+# dbName = "ttan_rag_poc"
 
-finalchatBotModelName = "hz_rag_pdf_test_bot"
+# finalchatBotModelName = "ttan_rag_bot"
 
+
+# COMMAND ----------
+
+# MAGIC %run ./config
 
 # COMMAND ----------
 
@@ -38,7 +41,7 @@ spark.sql(f"USE {catalog}.{dbName}")
 
 # For this first basic demo, we'll keep the configuration as a minimum. In real app, you can make all your RAG as a param (such as your prompt template to easily test different prompts!)
 chain_config = {
-    "llm_model_serving_endpoint_name": "databricks-dbrx-instruct",  # the foundation model we want to use
+    "llm_model_serving_endpoint_name": "databricks-meta-llama-3-70b-instruct",  # the foundation model we want to use
     "vector_search_endpoint_name": VECTOR_SEARCH_ENDPOINT_NAME,  # the endoint we want to use for vector search
     "vector_search_index": f"{catalog}.{dbName}.{vectorSearchIndexName}",
     "embeddings_endpoint": embeddings_endpoint,
@@ -209,6 +212,10 @@ Your inputs are invaluable for the development team. By providing detailed feedb
 
 # Add the user-facing instructions to the Review App
 agents.set_review_instructions(model_name, instructions_to_reviewer)
+
+
+
+# COMMAND ----------
 
 wait_for_model_serving_endpoint_to_be_ready(deployment_info.endpoint_name)
 
